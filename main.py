@@ -24,28 +24,47 @@ def insertTask():
     counter += 1
 
     clearTask()
+
+def deleteTask():
+    global counter
+
+    try:
+        task_number = int(taskNumberField.get("1.0", "end-1c").strip())
+        if 1 <= task_number < counter:
+            tasks_list.pop(task_number - 1)
+            print(f'Task {task_number} deleted. Current task list: {tasks_list}')
+            TextArea.delete("1.0", "end")
+            for i, task in enumerate(tasks_list, start=1):
+                TextArea.insert('end', f"[ {i} ] {task}")
+            counter -= 1
+        else:
+            print("Invalid task number.")
+    except ValueError:
+        print("Please enter a valid task number.")
+    
+    taskNumberField.delete("1.0", "end")
     
 
 if __name__ == "__main__":
-    root = Tk()
+    window = Tk()
 
-    root.title('My TO-DO Application')
-    root.geometry("500x600")
-    root.configure(background="light grey", border="2")
+    window.title('My TO-DO Application')
+    window.geometry("500x600")
+    window.configure(background="light grey", border="2")
 
-    enterTask = Label(root, text = "Ibrahim, what are you up for today?", bg = "light green")
-    enterTaskField = Entry(root)
+    enterTask = Label(window, text = "Ibrahim, what are you up for today?", bg = "light green")
+    enterTaskField = Entry(window)
 
-    Submit = Button(root, text = "Submit", fg = "Black", bg = "Red", command=insertTask)
-    TextArea = Text(root, height = 5, width = 25, font = "arial")
+    Submit = Button(window, text = "Submit", fg = "Black", bg = "Red", command=insertTask)
+    TextArea = Text(window, height = 5, width = 25, font = "arial")
  
-    taskNumber = Label(root, text = "Delete Task Number", bg = "blue")
+    taskNumber = Label(window, text = "Delete Task Number", bg = "blue")
                         
-    taskNumberField = Text(root, height = 1, width = 2, font = "lucida 13")
+    taskNumberField = Text(window, height = 1, width = 2, font = "lucida 13")
  
-    delete = Button(root, text = "Delete", fg = "Black", bg = "Red")
+    delete = Button(window, text = "Delete", fg = "Black", bg = "Red", command=deleteTask)
 
-    Exit = Button(root, text = "Exit", fg = "Black", bg = "Red", command = exit)
+    Exit = Button(window, text = "Exit", fg = "Black", bg = "Red", command = exit)
  
     enterTask.grid(row = 0, column = 2)
               
@@ -63,4 +82,4 @@ if __name__ == "__main__":
 
     Exit.grid(row = 7, column = 2)
 
-    root.mainloop()
+    window.mainloop()
